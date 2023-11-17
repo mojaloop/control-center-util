@@ -1,4 +1,4 @@
-docker run -it -v ~/.aws:/root/.aws ghcr.io/mojaloop/control-center-util:0.9.1 /bin/bash
+docker run -it -v ~/.aws:/root/.aws ghcr.io/mojaloop/control-center-util:0.9.4 /bin/bash
 
 to get started, run the follwing from commandline
 cd /iac-run-dir
@@ -7,11 +7,12 @@ source setenv
 ./init.sh
 cd /iac-run-dir/iac-modules/terraform/control-center/init
 modify environment.yaml file as appropriate
+source setlocalenv.sh
 ./runall.sh
 ./movestatetogitlab.sh
 Then, go to gitlab instance, use root password found by running: yq eval '.gitlab.vars.server_password'  $ANSIBLE_BASE_OUTPUT_DIR/control-center-deploy/inventory
 You then need to setup 2FA, then you can navigate to the bootstrap proyect and view pipelines in cicd section.
-First pipeline will be waiting at Deploy job.  Executing this should result in no changes but is a test to make sure that the configuration files have been correctly imported.
+First pipeline will be waiting at Deploy job.  Executing this will run through the steps already run in the docker container, but will also run the control-center-post-config module which needs to run from within the internal network as it accesses the tenancy vault.
 
 From now on, make changes to the files inside gitlab and execute the jobs as necessary to make changes to the control center components
 
