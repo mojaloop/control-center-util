@@ -4,8 +4,14 @@ ARG TERRAGRUNT_VERSION=0.57.0
 ARG VAULT_VERSION=1.13.4
 ARG YTT_VERSION=0.48.0
 ARG KAPP_VERSION=0.60.0
+ARG NETBIRD_VERSION=0.28.6
+
 # Update apt and Install dependencies
-RUN apt-get update && apt install software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y && apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
+   
+RUN apt-get update && apt install software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y \ 
+    && curl -sSL https://pkgs.netbird.io/debian/public.key | gpg --yes --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg \
+    && echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' | tee /etc/apt/sources.list.d/netbird.list \
+    && apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
     tzdata \
     curl \
     dnsutils \
@@ -21,6 +27,7 @@ RUN apt-get update && apt install software-properties-common -y && add-apt-repos
     wget \
     zip \
     mysql-client \
+    netbird=${NETBIRD_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
 # Install tools and configure the environment
