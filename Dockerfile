@@ -8,12 +8,11 @@ ARG NETBIRD_VERSION=0.28.6
 
 # Update apt and Install dependencies
    
-RUN apt-get update && apt install software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y \ 
+RUN apt-get update && apt install curl gnupg software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y \ 
     && curl -sSL https://pkgs.netbird.io/debian/public.key | gpg --yes --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg \
     && echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' | tee /etc/apt/sources.list.d/netbird.list \
     && apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
     tzdata \
-    curl \
     dnsutils \
     git \
     jq \
