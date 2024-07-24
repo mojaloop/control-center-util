@@ -5,6 +5,7 @@ ARG VAULT_VERSION=1.13.4
 ARG YTT_VERSION=0.48.0
 ARG KAPP_VERSION=0.60.0
 ARG NETBIRD_VERSION=0.28.6
+ARG KUBECTL_VERSION=1.24.6
 
 # Update apt and Install dependencies
    
@@ -44,10 +45,13 @@ RUN wget -q https://github.com/carvel-dev/ytt/releases/download/v${YTT_VERSION}/
 RUN wget -q https://github.com/carvel-dev/kapp/releases/download/v${KAPP_VERSION}/kapp-linux-amd64 -O /tmp/kapp-linux-amd64 \
     && mv /tmp/kapp-linux-amd64 /bin/kapp \
     && chmod +x /bin/kapp
+RUN wget -q https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -O /bin/kubectl \
+    && chmod +x /bin/kubectl   
+
 RUN pip3 install --upgrade pip \
     && mkdir /workdir && cd /workdir \
     && mkdir keys \
-    && python3 -m pip install ansible==5.7.1 netaddr awscli openshift>=0.6 setuptools>=40.3.0 \
+    && python3 -m pip install ansible==5.7.1 netaddr kubernetes awscli openshift>=0.6 setuptools>=40.3.0 \
     && ansible-galaxy collection install community.kubernetes
 
 COPY . iac-run-dir
