@@ -1,0 +1,1 @@
+docker run -it --cap-add SYS_ADMIN --cap-add NET_ADMIN ghcr.io/mojaloop/control-center-util:6.0.2 bash
