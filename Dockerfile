@@ -4,7 +4,6 @@ ARG TERRAGRUNT_VERSION=0.57.0
 ARG VAULT_VERSION=1.17.6
 ARG YTT_VERSION=0.48.0
 ARG KAPP_VERSION=0.60.0
-ARG NETBIRD_VERSION=0.30.2
 ARG KUBECTL_VERSION=1.24.6
 
 # Update apt and Install dependencies
@@ -27,7 +26,6 @@ RUN apt-get update && apt install curl gnupg software-properties-common -y && ad
     wget \
     zip \
     mysql-client \
-    netbird=${NETBIRD_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
 # Install tools and configure the environment
