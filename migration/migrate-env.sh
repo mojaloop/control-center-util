@@ -97,7 +97,7 @@ clone_gitlabrepo() {
     local path="$5"
     rm -rf $path
     mkdir -p $path
-    git clone https://token:$gitlab_token@gitlab.$cc_domain/$group/$project.git $path
+    git clone --recurse-submodules https://token:$gitlab_token@gitlab.$cc_domain/$group/$project.git $path
 
     if [[ $? -eq 0 ]]; then
         echo "Repository cloned successfully."
@@ -170,7 +170,8 @@ dest_cc_domain="$5"
 gitlab_group="iac"
 working_dir="$6"
 source_pipeline_job_id="$7"
-mode=$8
+env_domain="$8"
+mode=$9
 
 # Initial checks and validations
 check_dns $source_cc_domain
@@ -341,6 +342,40 @@ elif  [[ "$mode" == "post-migration"  ]]; then
         #Rewrite the vault oidc configuration directly
         vault_oidc_client_id_desired=$(vault read secret/data/$env_name/vault_oidc_client_id --format=json | jq -r ".data.data.value")
         vault_oidc_client_secret_desired=$(vault read secret/data/$env_name/vault_oidc_client_secret --format=json | jq -r ".data.data.value")
+    
+        zitadel_project_id_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "zitadel_project_id")
+        vault_admin_rbac_group_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "vault_admin_rbac_group")
+        vault_readonly_rbac_group_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "vault_readonly_rbac_group")
+        vault write auth/oidc/config \
+          bound_issuer="https://zitadel.${dest_cc_domain}" \
+          oidc_discovery_url="https://zitadel.${dest_cc_domain}" \
+          oidc_client_id="${vault_oidc_client_id_desired}" \
+          oidc_client_secret="${vault_oidc_client_secret_desired}" \
+          default_role="techops-admin"
 
+        vault write auth/oidc/role/techops-admin -<<EOF
+          {
+            "user_claim": "sub",
+            "bound_audiences": "${vault_oidc_client_id_desired}",
+            "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
+            "role_type": "oidc",
+            "token_policies": "vault-admin",
+            "ttl": "1h",
+            "oidc_scopes": ["openid"], 
+            "bound_claims": { "zitadel:grants": ["${zitadel_project_id_desired}:${vault_admin_rbac_group_desired}"] }
+          }
+EOF          
+        vault write auth/oidc/role/techops-readonly -<<EOF
+          {
+            "user_claim": "sub",
+            "bound_audiences": "${vault_oidc_client_id_desired}",
+            "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
+            "role_type": "oidc",
+            "token_policies": "read-secrets",
+            "ttl": "1h",
+            "oidc_scopes": ["openid"],
+            "bound_claims": { "zitadel:grants": ["${zitadel_project_id}:${vault_readonly_rbac_group_desired}"] }
+          }
+EOF
 fi
 
