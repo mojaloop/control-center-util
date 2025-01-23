@@ -3,7 +3,7 @@ name: Docker Image Sync with Skopeo
 on:
   push:
     branches:
-      - main  # or any other trigger you prefer
+      - feat/CTO-844_basic_image_mirror  # or any other trigger you prefer
 
 jobs:
   sync_images:
