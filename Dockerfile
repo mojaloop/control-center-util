@@ -7,8 +7,8 @@ ARG KAPP_VERSION=0.60.0
 ARG KUBECTL_VERSION=1.24.6
 
 # Update apt and Install dependencies
-   
-RUN apt-get update && apt install curl gnupg software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y \ 
+
+RUN apt-get update && apt install curl gnupg software-properties-common -y && add-apt-repository ppa:rmescandon/yq -y \
     && curl -sSL https://pkgs.netbird.io/debian/public.key | gpg --yes --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg \
     && echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' | tee /etc/apt/sources.list.d/netbird.list \
     && apt update && DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y \
@@ -44,7 +44,7 @@ RUN wget -q https://github.com/carvel-dev/kapp/releases/download/v${KAPP_VERSION
     && mv /tmp/kapp-linux-amd64 /bin/kapp \
     && chmod +x /bin/kapp
 RUN wget -q https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -O /bin/kubectl \
-    && chmod +x /bin/kubectl   
+    && chmod +x /bin/kubectl
 
 RUN pip3 install --upgrade pip \
     && mkdir /workdir && cd /workdir \
@@ -52,4 +52,4 @@ RUN pip3 install --upgrade pip \
     && python3 -m pip install ansible==5.7.1 netaddr kubernetes awscli openshift>=0.6 setuptools>=40.3.0 \
     && ansible-galaxy collection install community.kubernetes
 
-COPY . iac-run-dir
+COPY ./cc-util/ iac-run-dir
