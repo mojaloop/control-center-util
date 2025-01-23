@@ -27,8 +27,8 @@ docker.io:
 # - sonatype/nexus3:3.75.1
 # - velero/velero-plugin-for-aws:v1.10.1
 # - velero/velero:v1.14.1
-# xpkg.upbound.io:
-# - crossplane-contrib/function-go-templating:v0.8.0
+xpkg.upbound.io:
+- crossplane-contrib/function-go-templating:v0.8.0
 # - crossplane-contrib/function-patch-and-transform:v0.2.1
 # - crossplane-contrib/provider-ansible:v0.6.0
 # - crossplane-contrib/provider-aws:v0.49.2
