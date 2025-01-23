@@ -1,9 +1,7 @@
 name: Image Mirror
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   sync_images:
