@@ -27,9 +27,11 @@ jobs:
           IMAGE_LIST="infra-images.yaml"
 
           # Loop through each registry and image in the YAML file
-          for registry in $(yq eval 'keys' $IMAGE_LIST); do
-            # Loop through each image and tag for this registry
+          for registry in $(yq eval '. | keys | .[]' $IMAGE_LIST); do
+
+            # Loop through each image tag for this registry
             for image in $(yq eval ".${registry}[]" $IMAGE_LIST); do
+
               # Extract the image tag (e.g., nginx:latest)
               tag=$(echo $image | cut -d':' -f2)
               image_name=$(echo $image | cut -d':' -f1)
@@ -42,7 +44,9 @@ jobs:
 
               # Copy the image from the source registry to GitHub Packages (GHCR)
               skopeo copy $SOURCE_IMAGE $GHCR_IMAGE
+
             done
+
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
