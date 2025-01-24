@@ -23,27 +23,32 @@ jobs:
         run: |
           # File containing list of images
           IMAGE_LIST="./infra-images.yaml"
-
-          # Loop through each registry and image in the YAML file
+          # Loop through each registry
           for registry in $(yq '. | keys | .[]' "${IMAGE_LIST}"); do
 
-              # Loop through each image tag for this registry
-              for image in $(yq ".${registry}[]" "${IMAGE_LIST}"); do
 
-                  # Extract the image tag (e.g., nginx:1.0.0)
-                  # and strip quotes
-                  registry=$(echo "${registry}" | tr -d '"')
-                  tag=$(echo "${image}" | cut -d':' -f2  | tr -d '"')
-                  image_name=$(echo "${image}" | cut -d':' -f1 | tr -d '"')
+              # Loop through each image
+              for image_name in $(yq ".${registry} | keys | .[]" "${IMAGE_LIST}"); do
 
-                  # Construct the full source image path
-                  SOURCE_IMAGE="docker://${registry}/${image_name}:${tag}"
 
-                  # Define destination image on GHCR
-                  GHCR_IMAGE="docker://ghcr.io/${{ github.repository_owner }}/infra/${image_name}:${tag}"
 
-                  # Copy the image from the source registry to GitHub Packages (GHCR)
-                  skopeo copy "${SOURCE_IMAGE}" "${GHCR_IMAGE}"
+                  # Loop through each tag
+                  for tags in $(yq ".${registry}.${image_name}[]" "${IMAGE_LIST}"); do
+
+                      # Cleanup the yq quoted output
+                      reg=$(echo "${registry}" | tr -d '"')
+                      image=$(echo "${image_name}" | cut -d':' -f1 | tr -d '"')
+                      tag=$(echo "${tags}" | cut -d':' -f2  | tr -d '"')
+
+                      # Construct the full source image path
+                      SOURCE_IMAGE="docker://${reg}/${image}:${tag}"
+
+                      # Define destination image on GHCR
+                      GHCR_IMAGE="docker://ghcr.io/${{ github.repository_owner }}/infra/${image}:${tag}"
+
+                      # Copy the image from the source registry to GitHub Packages (GHCR)
+                      skopeo copy "${SOURCE_IMAGE}" "${GHCR_IMAGE}"
+                  done
               done
           done
 
