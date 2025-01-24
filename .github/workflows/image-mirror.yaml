@@ -22,18 +22,16 @@ jobs:
       - name: Pull and Push Images
         run: |
           # File containing list of images
-          IMAGE_LIST="./infra-images.yaml"
-          # Loop through each registry
-          for registry in $(yq '. | keys | .[]' "${IMAGE_LIST}"); do
+          image_list="./infra-images.yaml"
 
+          # Loop through each registry
+          for registry in $(yq '. | keys | .[]' "${image_list}"); do
 
               # Loop through each image
-              for image_name in $(yq ".${registry} | keys | .[]" "${IMAGE_LIST}"); do
-
-
+              for image_name in $(yq ".${registry} | keys | .[]" "${image_list}"); do
 
                   # Loop through each tag
-                  for tags in $(yq ".${registry}.${image_name}[]" "${IMAGE_LIST}"); do
+                  for tags in $(yq ".${registry}.${image_name}[]" "${image_list}"); do
 
                       # Cleanup the yq quoted output
                       reg=$(echo "${registry}" | tr -d '"')
@@ -48,8 +46,11 @@ jobs:
 
                       # Copy the image from the source registry to GitHub Packages (GHCR)
                       skopeo copy "${SOURCE_IMAGE}" "${GHCR_IMAGE}"
+
                   done
+
               done
+
           done
 
         env:
