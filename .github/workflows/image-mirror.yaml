@@ -44,6 +44,9 @@ jobs:
                       # Define destination image on GHCR
                       GHCR_IMAGE="docker://ghcr.io/${{ github.repository_owner }}/infra/${image}:${tag}"
 
+                      echo "Copying image from source: ${SOURCE_IMAGE}"
+                      echo "To destination: ${GHCR_IMAGE}"
+
                       # Copy the image from the source registry to GitHub Packages (GHCR)
                       skopeo copy "${SOURCE_IMAGE}" "${GHCR_IMAGE}"
 
