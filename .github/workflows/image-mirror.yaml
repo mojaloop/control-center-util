@@ -1,0 +1,57 @@
+name: Image Mirror
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Skopeo and yq
+        run: |
+          sudo apt-get install -y skopeo
+          sudo apt-get install -y yq
+
+      - name: Login to GitHub Packages (GHCR)
+        run: echo ${{ secrets.GITHUB_TOKEN }} | skopeo login ghcr.io --username ${{ github.actor }} --password-stdin
+
+      - name: Pull and Push Images
+        run: |
+          # File containing list of images
+          image_list="./infra-images.yaml"
+
+          # Loop through each registry
+          for registry in $(yq '. | keys | .[]' "${image_list}"); do
+
+              # Loop through each image
+              for image_name in $(yq ".${registry} | keys | .[]" "${image_list}"); do
+
+                  # Loop through each tag
+                  for tags in $(yq ".${registry}.${image_name}[]" "${image_list}"); do
+
+                      # Cleanup the yq quoted output
+                      reg=$(echo "${registry}" | tr -d '"')
+                      image=$(echo "${image_name}" | cut -d':' -f1 | tr -d '"')
+                      tag=$(echo "${tags}" | cut -d':' -f2  | tr -d '"')
+
+                      # Construct the full source image path
+                      SOURCE_IMAGE="docker://${reg}/${image}:${tag}"
+
+                      # Define destination image on GHCR
+                      GHCR_IMAGE="docker://ghcr.io/${{ github.repository_owner }}/infra/${image}:${tag}"
+
+                      # Copy the image from the source registry to GitHub Packages (GHCR)
+                      skopeo copy "${SOURCE_IMAGE}" "${GHCR_IMAGE}"
+
+                  done
+
+              done
+
+          done
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

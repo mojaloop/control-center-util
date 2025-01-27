@@ -1,0 +1,68 @@
+docker.io:
+  alpine/helm:
+  - 3.14.0
+  alpine:
+  - 3
+  bitnami/kubectl:
+  - 1.29
+  cdkbot/hostpath-provisioner:
+  - 1.5.0
+  contentful/coredns-nodecache:
+  - v1.11.3
+  curlimages/curl:
+  - latest
+  emberstack/kubernetes-reflector:
+  - 7.1.262
+  golang:
+  - 1.20-alpine3.18
+  - 1.22.4-alpine3.20
+  grafana/grafana:
+  - 11.1.1
+  grafana/mimirtool:
+  - 2.14.1
+  hashicorp/consul-k8s-control-plane:
+  - 1.4.0
+  hashicorp/consul:
+  - 1.18.0
+  hashicorp/vault:
+  - 1.17.2
+  kubernetesui/dashboard:
+  - v2.7.0
+  kubernetesui/metrics-scraper:
+  - v1.0.8
+  netbirdio/dashboard:
+  - v2.7.0
+  netbirdio/management:
+  - 0.31.1
+  netbirdio/relay:
+  - 0.31.1
+  netbirdio/signal:
+  - 0.31.1
+  percona/percona-postgresql-operator:
+  - 2.4.0
+  - 2.4.0-ppg16.3-pgbackrest2.51-1
+  - 2.4.0-ppg16.3-pgbouncer1.22.1
+  - 2.4.0-ppg16.3-postgres
+  registry:
+  - 2.8.1
+  sonatype/nexus3:
+  - 3.75.1
+  velero/velero-plugin-for-aws:
+  - v1.10.1
+  velero/velero:
+  - v1.14.1
+xpkg.upbound.io:
+  crossplane-contrib/function-go-templating:
+  - v0.8.0
+  crossplane-contrib/function-patch-and-transform:
+  - v0.2.1
+  crossplane-contrib/provider-ansible:
+  - v0.6.0
+  crossplane-contrib/provider-aws:
+  - v0.49.2
+  crossplane-contrib/provider-kubernetes:
+  - v0.11.4
+  upbound/provider-terraform:
+  - v0.16.0
+  upbound/provider-vault:
+  - v1.0.0
