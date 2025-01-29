@@ -160,6 +160,37 @@ upload_env_bucket_data() {
     done    
 }
 
+show_help() {
+    echo "Usage: $0 <env_name> <source_kubeconfig> <dest_kubeconfig> <source_cc_domain> <dest_cc_domain> <working_dir> <source_pipeline_job_id> <env_domain> <env_dest_kubeconfig> <mode>"
+    echo
+    echo "Arguments:"
+    echo "  env_name               - Environment name"
+    echo "  source_kubeconfig      - Source cluster kubeconfig file"
+    echo "  dest_kubeconfig        - Destination cluster kubeconfig file"
+    echo "  source_cc_domain       - Source CC domain"
+    echo "  dest_cc_domain         - Destination CC domain"
+    echo "  working_dir            - Working directory path"
+    echo "  source_pipeline_job_id - Pipeline job ID for source where artifacts are stored"
+    echo "  env_domain             - Environment domain name"
+    echo "  env_dest_kubeconfig    - Kubeconfig file for environment destination"
+    echo "  mode                   - Script mode (e.g., migrate-env, migrate-buckets, migrate-vault, post-migration)"
+    echo
+    echo "Example:"
+    echo "  $0 sh ./migrate-env.sh testenv ./source-kubeconfig ./dest-kubeconfig cntrlcenter.drpp.moja-onprem.net mtest01.ccv2.drpp.global ./ 25747 envlab202501.drpp.global ./env-dest-kubeconfig post-migration"
+    exit 0
+}
+
+
+# Check if help is requested
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_help
+fi
+
+# Check if at least 10 arguments are provided
+if [[ $# -lt 10 ]]; then
+    echo "Error: Missing arguments!"
+    show_help
+fi
 
 # Define the search pattern
 env_name="$1"
@@ -174,7 +205,17 @@ env_domain="$8"
 env_dest_kubeconfig="$9"
 mode=${10}
 
-echo $mode
+echo "Running script with:"
+echo "  env_name = $env_name"
+echo "  source_kubeconfig = $source_kubeconfig"
+echo "  dest_kubeconfig = $dest_kubeconfig"
+echo "  source_cc_domain = $source_cc_domain"
+echo "  dest_cc_domain = $dest_cc_domain"
+echo "  working_dir = $working_dir"
+echo "  source_pipeline_job_id = $source_pipeline_job_id"
+echo "  env_domain = $env_domain"
+echo "  env_dest_kubeconfig = $env_dest_kubeconfig"
+echo "  mode = $mode"
 
 # Initial checks and validations
 check_dns $source_cc_domain
