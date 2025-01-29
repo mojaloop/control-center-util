@@ -262,6 +262,7 @@ if [[ "$mode" == "migrate-env" ]]; then
         cp -r $working_dir/source_path/$env_name/* $working_dir/dest_path/$env_name/
         cp -r $working_dir/source_path/$env_name/.gitlab $working_dir/dest_path/$env_name/
         cp -r $working_dir/source_path/$env_name/.gitlab-ci.yml $working_dir/dest_path/$env_name/
+        cp -r $working_dir/source_path/$env_name/.gitmodules $working_dir/dest_path/$env_name/
         yq eval '.migrate = true' -i $working_dir/dest_path/$env_name/custom-config/cluster-config.yaml
 
 
