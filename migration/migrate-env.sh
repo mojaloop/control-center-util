@@ -321,7 +321,7 @@ elif  [[ "$mode" == "migrate-vault"  ]]; then
 elif  [[ "$mode" == "post-migration"  ]]; then         
 
         # Connect to destination netbird vpn
-        #netbird_connect $dest_cc_domain        
+        netbird_connect $dest_cc_domain        
         # Verify the destination argocd-oidc secret synced and has the latest oidc config
 
         VAULT_TOKEN=$(get_k8s_secret_value "vault" "vault-keys" "root_token" $dest_kubeconfig)
