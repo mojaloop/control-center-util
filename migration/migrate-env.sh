@@ -332,24 +332,34 @@ elif  [[ "$mode" == "post-migration"  ]]; then
         argocd_oidc_client_id_desired=$(vault read secret/data/$env_name/argocd_oidc_client_id --format=json | jq -r ".data.data.value")
 
         argocd_oidc_client_id_actual=$(get_k8s_secret_value "argocd" "argo-oidc" "clientid" $env_dest_kubeconfig)
+        echo $argocd_oidc_client_id_desired
         echo $argocd_oidc_client_id_actual
 
         if [[ "$argocd_oidc_client_id_desired" != "$argocd_oidc_client_id_actual" ]]; then
             echo "Error: argocd-oidc secret not synced or has the latest oidc config, retry after sometime."
             exit 1
-        else:
+        else
             echo "argocd-oidc secret synced and has the latest oidc config"
             #restart argocd server
             kubectl rollout restart deployment argocd-server -n argocd --kubeconfig=$env_dest_kubeconfig
         fi
 
+
         #Rewrite the vault oidc configuration directly
         vault_oidc_client_id_desired=$(vault read secret/data/$env_name/vault_oidc_client_id --format=json | jq -r ".data.data.value")
         vault_oidc_client_secret_desired=$(vault read secret/data/$env_name/vault_oidc_client_secret --format=json | jq -r ".data.data.value")
-    
+
+        dest_gitlab_token=$(get_k8s_secret_value "gitlab" "root-token-secret" "token" $dest_kubeconfig)  
+        dest_gitlab_project_id=$(get_gitlab_project_id $dest_gitlab_token $dest_cc_domain $env_name)         
         zitadel_project_id_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "zitadel_project_id")
         vault_admin_rbac_group_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "vault_admin_rbac_group")
         vault_readonly_rbac_group_desired=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "vault_readonly_rbac_group")
+        
+
+        VAULT_ADDR="https://vault.int.$env_name.$env_domain"
+        VAULT_TOKEN=$(get_gitlab_cicd_var $dest_gitlab_token $dest_cc_domain $dest_gitlab_project_id "VAULT_ROOT_TOKEN")
+        echo $VAULT_ADDR
+        
         vault write auth/oidc/config \
           bound_issuer="https://zitadel.${dest_cc_domain}" \
           oidc_discovery_url="https://zitadel.${dest_cc_domain}" \
@@ -357,29 +367,29 @@ elif  [[ "$mode" == "post-migration"  ]]; then
           oidc_client_secret="${vault_oidc_client_secret_desired}" \
           default_role="techops-admin"
 
-        vault write auth/oidc/role/techops-admin -<<EOF
-          {
-            "user_claim": "sub",
-            "bound_audiences": "${vault_oidc_client_id_desired}",
-            "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
-            "role_type": "oidc",
-            "token_policies": "vault-admin",
-            "ttl": "1h",
-            "oidc_scopes": ["openid"], 
-            "bound_claims": { "zitadel:grants": ["${zitadel_project_id_desired}:${vault_admin_rbac_group_desired}"] }
-          }
-EOF          
-        vault write auth/oidc/role/techops-readonly -<<EOF
-          {
-            "user_claim": "sub",
-            "bound_audiences": "${vault_oidc_client_id_desired}",
-            "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
-            "role_type": "oidc",
-            "token_policies": "read-secrets",
-            "ttl": "1h",
-            "oidc_scopes": ["openid"],
-            "bound_claims": { "zitadel:grants": ["${zitadel_project_id}:${vault_readonly_rbac_group_desired}"] }
-          }
+       vault write auth/oidc/role/techops-admin -<<EOF
+{
+  "user_claim": "sub",
+  "bound_audiences": "${vault_oidc_client_id_desired}",
+  "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
+  "role_type": "oidc",
+  "token_policies": "vault-admin",
+  "ttl": "1h",
+  "oidc_scopes": ["openid"], 
+  "bound_claims": { "zitadel:grants": ["${zitadel_project_id_desired}:${vault_admin_rbac_group_desired}"] }
+}
+EOF
+       vault write auth/oidc/role/techops-readonly -<<EOF
+{
+  "user_claim": "sub",
+  "bound_audiences": "${vault_oidc_client_id_desired}",
+  "allowed_redirect_uris": ["https://vault.int.${env_name}.${env_domain}/ui/vault/auth/oidc/oidc/callback"],
+  "role_type": "oidc",
+  "token_policies": "read-secrets",
+  "ttl": "1h",
+  "oidc_scopes": ["openid"],
+  "bound_claims": { "zitadel:grants": ["${zitadel_project_id}:${vault_readonly_rbac_group_desired}"] }
+}
 EOF
 fi
 
