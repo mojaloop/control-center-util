@@ -171,7 +171,10 @@ gitlab_group="iac"
 working_dir="$6"
 source_pipeline_job_id="$7"
 env_domain="$8"
-mode=$9
+env_dest_kubeconfig="$9"
+mode=${10}
+
+echo $mode
 
 # Initial checks and validations
 check_dns $source_cc_domain
@@ -328,7 +331,7 @@ elif  [[ "$mode" == "post-migration"  ]]; then
         VAULT_ADDR="https://vault.int.$dest_cc_domain"
         argocd_oidc_client_id_desired=$(vault read secret/data/$env_name/argocd_oidc_client_id --format=json | jq -r ".data.data.value")
 
-        argocd_oidc_client_id_actual=$(get_k8s_secret_value "argocd" "argo-oidc" "clientid" $dest_kubeconfig)
+        argocd_oidc_client_id_actual=$(get_k8s_secret_value "argocd" "argo-oidc" "clientid" $env_dest_kubeconfig)
         echo $argocd_oidc_client_id_actual
 
         if [[ "$argocd_oidc_client_id_desired" != "$argocd_oidc_client_id_actual" ]]; then
@@ -337,7 +340,7 @@ elif  [[ "$mode" == "post-migration"  ]]; then
         else:
             echo "argocd-oidc secret synced and has the latest oidc config"
             #restart argocd server
-            kubectl rollout restart deployment argocd-server -n argocd --kubeconfig=$dest_kubeconfig   
+            kubectl rollout restart deployment argocd-server -n argocd --kubeconfig=$env_dest_kubeconfig
         fi
 
         #Rewrite the vault oidc configuration directly
