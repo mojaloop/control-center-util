@@ -58,6 +58,8 @@ docker.io:
   velero/velero:
   - v1.14.1
 xpkg.upbound.io:
+  crossplane/crossplane:
+  - v1.16.0
   crossplane-contrib/function-go-templating:
   - v0.8.0
   crossplane-contrib/function-patch-and-transform:
