@@ -49,6 +49,8 @@ docker.io:
   - 2.4.0-ppg16.3-postgres
   registry:
   - 2.8.1
+  rook/ceph:
+  - v1.15.5
   sonatype/nexus3:
   - 3.75.1
   velero/velero-plugin-for-aws:
