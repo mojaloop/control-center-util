@@ -49,10 +49,13 @@ docker.io:
   - v2.7.0
   netbirdio/management:
   - 0.31.1
+  - 0.36.5
   netbirdio/relay:
   - 0.31.1
+  - 0.36.5
   netbirdio/signal:
   - 0.31.1
+  - 0.36.5
   percona/percona-postgresql-operator:
   - 2.4.0
   - 2.4.0-ppg16.3-pgbackrest2.51-1
