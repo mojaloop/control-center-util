@@ -39,6 +39,8 @@ docker.io:
   - v2.7.0
   kubernetesui/metrics-scraper:
   - v1.0.8
+  l7mp/stunner-auth-server:
+  - 0.19.0
   netbirdio/dashboard:
   - v2.7.0
   netbirdio/management:
