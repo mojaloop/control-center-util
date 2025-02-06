@@ -29,6 +29,7 @@ docker.io:
   hashicorp/consul:
   - 1.18.0
   hashicorp/vault:
+  - latest
   - 1.17.2
   istio/pilot:
   - 1.22.1
