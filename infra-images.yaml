@@ -43,6 +43,8 @@ docker.io:
   - 0.19.0
   l7mp/stunner-gateway-operator:
   - 0.19.0
+  l7mp/stunnerd:
+  - 0.19.0
   netbirdio/dashboard:
   - v2.7.0
   netbirdio/management:
