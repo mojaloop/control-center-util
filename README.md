@@ -12,11 +12,11 @@ The built container image, hosted in GHCR, includes all the necessary utilities 
 - aws cli
 - necessary pip modules and ansible collections
 
-The `cc-util` directory is copied to the container, destination being `/iac-run-dir` in the workflow that builds an image.
+The `cc-util` directory is copied into the container, with `/iac-run-dir` as the destination in the image build workflow.
 
 ### Dependencies
 
-A Linux, macOS or Windows operating system with [Docker Engine](https://docs.docker.com/engine/install/) installed and working.
+A Linux, macOS or Windows host operating system with [Docker Engine](https://docs.docker.com/engine/install/) installed and working. This can be your workstation, or a virtual machine in a cloud platform.
 
 Validate docker is working by running:
 
@@ -25,6 +25,7 @@ docker version
 #OR
 docker info
 ```
+
 If you’re not running docker commands as the root user, consider adding your standard user account to the docker group:
 
 ```bash
