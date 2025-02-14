@@ -14,7 +14,7 @@ The built container image, hosted in GHCR, includes all the necessary utilities 
 
 The `cc-util` directory is copied into the container, with `/iac-run-dir` as the destination in the image build workflow.
 
-### Dependencies
+## Dependencies
 
 A Linux, macOS or Windows host operating system with [Docker Engine](https://docs.docker.com/engine/install/) installed and working. This can be your workstation, or a virtual machine in a cloud platform.
 
@@ -35,9 +35,9 @@ newgrp docker
 
 The docker host should also have internet connectivity.
 
-### Getting started
+## Getting started
 
-Start a new container instance from `control-center-util` image. You can check available official versions from [Releases](https://github.com/mojaloop/control-center-util/releases) page.
+The first step is to create a new container instance from `control-center-util` image. You can check available official versions from [Releases](https://github.com/mojaloop/control-center-util/releases) page.
 
 Set the name of the container (optional), and version obtained from the releases page.
 
@@ -67,7 +67,7 @@ Launch a new shell into the container:
 docker exec -ti $CNAME bash
 ```
 
-### Provision control center cluster
+## Provision control center cluster
 
 For an AWS cloud environment, configure credentials by running:
 
@@ -96,7 +96,7 @@ Change your working directory to `/iac-run-dir`
 cd /iac-run-dir
 ```
 
-Before we can clone the [iac-modules] repository which has all the IAC for installing control center. We need to set release tag in the `setenv` file.
+Before cloning the [iac-modules](https://github.com/mojaloop/iac-modules) repository, which contains all the IaC for installing the control center, we need to set the release tag in the `setenv` file.
 
 ```bash
 $ vim setenv
@@ -112,7 +112,7 @@ source setenv
 ./init.sh
 ```
 
-#### Create custom cluster configuration file
+### Create custom cluster configuration file
 
 Next change your working directory to:
 
@@ -164,7 +164,7 @@ Finally, create infrastructure resources and cluster resources by running the fo
 ./wrapper.sh
 ```
 
-### Access Zitadel dashboard
+## Access Zitadel dashboard
 
 Go to zitadel and login as admin to create your own user. The URL will be `https://zitadel.cluster_name.domain`. Login as:
 
@@ -173,21 +173,21 @@ Go to zitadel and login as admin to create your own user. The URL will be `https
 
 You will be asked to change the password on first initial successful login.
 
-#### Creating a user
+### Creating a user
 
 While logged in as admin user, create new users  on **Users** --> **+New**. Then input required user details.
 
 If no smtp configurations done, click on **Email Verified** and set a **Set Initial Password**. A user will be required to change this password on first login.
 
-#### Assigning user authorizations
+### Assigning user authorizations
 
 This is done on "Authorizations" > "New" > "Select Project" > "Select Privilege". And this can be repeted for all other applications.
 
-### Access Gitlab
+## Access Gitlab UI
 
 Provided the user has Gitlab privileges assigned in Zitadel, they can login on `https://gitlab.cluster_name.domain`. On the login page, use **Zitadel** for SSO and signing your credentials.
 
-### Connecting to netbird VPN mesh
+## Connecting to netbird VPN mesh
 
 Install netbird client:
 
@@ -209,7 +209,7 @@ The same can be initiated from Desktop UI of Netbird application. Go to Netbird 
 
 Client configuration information can also be obtained from -  `https://netbird-dashboard.cluster_name.domain`
 
-### Accessing internal applications
+## Accessing internal applications
 
 To get a list of services only accessible internally, run:
 
@@ -224,7 +224,7 @@ Example of these are:
 
 And login is via OIDC - SSO, but make sure the user is granted necessary permissions to access the resources.
 
-### Moving kubernetes to k8s
+## Moving kubernetes to k8s
 
 Terraform state file can be stored as a secret in kubernetes `kube-system` namespace by runnning the following command inside the build container:
 
