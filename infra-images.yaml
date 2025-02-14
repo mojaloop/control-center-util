@@ -1,17 +1,72 @@
 xpkg.upbound.io:
   crossplane/crossplane:
   - v1.16.0
+  - v1.16.3
+  - v1.16.4
+  - v1.16.5
+  - v1.17.3
+  - v1.17.4
+  - v1.17.5
+  - v1.18.0
+  - v1.18.1
+  - v1.18.2
+  - v1.18.3
+  - v1.19.0
   crossplane-contrib/function-go-templating:
   - v0.8.0
+  - v0.9.0
+  - v0.9.1
   crossplane-contrib/function-patch-and-transform:
   - v0.2.1
+  - v0.3.0
+  - v0.4.0
+  - v0.5.0
+  - v0.6.0
+  - v0.7.0
+  - v0.8.0
+  - v0.8.1
   crossplane-contrib/provider-ansible:
   - v0.6.0
   crossplane-contrib/provider-aws:
   - v0.49.2
+  - v0.50.1
+  - v0.50.2
+  - v0.50.3
+  - v0.50.4
+  - v0.50.5
+  - v0.50.6
+  - v0.50.7
+  - v0.51.0
+  - v0.51.1
+  - v0.51.2
+  - v0.51.3
+  - v0.51.4
   crossplane-contrib/provider-kubernetes:
   - v0.11.4
+  - v0.11.5
+  - v0.12.1
+  - v0.13.0
+  - v0.14.0
+  - v0.14.1
+  - v0.15.0
+  upbound/provider-kubernetes:
+  - v0.16.0
+  - v0.16.1
+  - v0.16.2
+  - v0.16.3
   upbound/provider-terraform:
   - v0.16.0
+  - v0.17.0
+  - v0.17.3
+  - v0.18.0
+  - v0.18.3
+  - v0.19.0
+  - v0.19.1
+  - v0.19.2
+  - v0.19.3
+  - v0.19.4
   upbound/provider-vault:
   - v1.0.0
+  - v2.0.0
+  - v2.1.0
+  - v2.1.1
