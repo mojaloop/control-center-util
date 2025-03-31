@@ -5,8 +5,7 @@ xpkg.upbound.io:
   - v0.8.0
   crossplane-contrib/function-patch-and-transform:
   - v0.2.1
-  - v0.9.0
-  - v0.9.1
+  - v0.8.2
   crossplane-contrib/function-kcl:
   - v0.11.3
   crossplane-contrib/function-auto-ready:
