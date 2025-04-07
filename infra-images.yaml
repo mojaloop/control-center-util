@@ -5,6 +5,11 @@ xpkg.upbound.io:
   - v0.8.0
   crossplane-contrib/function-patch-and-transform:
   - v0.2.1
+  - v0.8.2
+  crossplane-contrib/function-kcl:
+  - v0.11.3
+  crossplane-contrib/function-auto-ready:
+  - v0.4.2
   crossplane-contrib/provider-ansible:
   - v0.6.0
   crossplane-contrib/provider-aws:
@@ -15,3 +20,9 @@ xpkg.upbound.io:
   - v0.16.0
   upbound/provider-vault:
   - v1.0.0
+  upbound/provider-family-aws:
+  - v1.21.1
+  upbound/provider-aws-iam:
+  - v1.21.0
+  upbound/provider-aws-s3:
+  - v1.21.0
