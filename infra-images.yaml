@@ -16,6 +16,8 @@ xpkg.upbound.io:
   - v0.49.2
   crossplane-contrib/provider-kubernetes:
   - v0.11.4
+  crossplane-contrib/provider-helm:
+  - v0.20.4
   upbound/provider-terraform:
   - v0.16.0
   upbound/provider-vault:
