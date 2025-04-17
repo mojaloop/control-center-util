@@ -32,3 +32,5 @@ xpkg.upbound.io:
   - v1.21.0
   upbound/provider-aws-ec2:
   - v1.21.0
+  upbound/provider-aws-rds:
+  - v1.21.0
