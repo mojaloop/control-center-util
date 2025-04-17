@@ -18,10 +18,13 @@ xpkg.upbound.io:
   - v0.11.4
   crossplane-contrib/provider-helm:
   - v0.20.4
+  crossplane-contrib/provider-gitlab:
+  - v0.10.3
   upbound/provider-terraform:
   - v0.16.0
   upbound/provider-vault:
   - v1.0.0
+  - v2.1.1
   upbound/provider-family-aws:
   - v1.21.1
   upbound/provider-aws-iam:
