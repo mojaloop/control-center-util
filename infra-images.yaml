@@ -41,3 +41,5 @@ xpkg.upbound.io:
   - v1.21.0
   upbound/provider-aws-rds:
   - v1.21.0
+  grafana/provider-grafana:
+  - v0.28.0
