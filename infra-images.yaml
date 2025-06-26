@@ -12,6 +12,8 @@ xpkg.upbound.io:
   - v0.4.2
   crossplane-contrib/function-extra-resources:
   - v0.0.3
+  upbound/function-cidr:
+  - v0.6.0
   crossplane-contrib/provider-ansible:
   - v0.6.0
   crossplane-contrib/provider-aws:
