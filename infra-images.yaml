@@ -25,6 +25,8 @@ xpkg.upbound.io:
   - v0.20.4
   crossplane-contrib/provider-gitlab:
   - v0.10.3
+  crossplane-contrib/provider-http:
+  - v1.0.11
   upbound/provider-terraform:
   - v0.16.0
   upbound/provider-vault:
