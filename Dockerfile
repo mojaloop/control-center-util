@@ -1,5 +1,4 @@
 FROM ubuntu:20.04
-ARG TERRAFORM_VERSION=1.3.2
 ARG OPENTOFU_VERSION=1.6.2
 ARG TERRAGRUNT_VERSION=0.57.0
 ARG VAULT_VERSION=1.17.6
@@ -30,9 +29,6 @@ RUN apt-get update && apt install curl gnupg software-properties-common -y && ad
     && rm -rf /var/lib/apt/lists/*
 
 # Install tools and configure the environment
-RUN wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-    && unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin/ \
-    && rm /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN wget -q https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_amd64.zip -O /tmp/tofu_${OPENTOFU_VERSION}_linux_amd64.zip \
     && unzip /tmp/tofu_${OPENTOFU_VERSION}_linux_amd64.zip -d /bin/ \
     && rm /tmp/tofu_${OPENTOFU_VERSION}_linux_amd64.zip
