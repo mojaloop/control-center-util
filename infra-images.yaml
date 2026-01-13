@@ -18,6 +18,8 @@ xpkg.upbound.io:
   - v0.6.0
   crossplane-contrib/provider-aws:
   - v0.49.2
+  crossplane-contrib/provider-http:
+  - v1.0.10  
   crossplane-contrib/provider-kubernetes:
   - v0.11.4
   - v0.18.0
